@@ -3,7 +3,7 @@
     <div class="items">
       <template v-if="this.productsInBag.length">
         <div class="item" v-for="(product, index) in this.productsInBag" :key="index">
-          <div class="remove">Remove item</div>
+          <div class="remove" @click="this.removeFromBag(product)">Remove item</div>
           <div class="photo"><img :src="product.image" :alt="product.title">
           </div>
           <div class="description">{{ product.title }}</div>
@@ -43,6 +43,11 @@ export default {
     },
     calcQuantityOfProducts(product) {
       return product.price * product.quantity;
+    },
+    removeFromBag(product) {
+      if (confirm("Are you sure you want to remove this product from bag?")) {
+        this.$store.dispatch('removeFromBag', product.id);
+      }
     }
   },
 
