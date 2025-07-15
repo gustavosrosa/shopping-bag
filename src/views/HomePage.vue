@@ -1,8 +1,7 @@
 <template>
   <div class="home">
     <div class="products">
-      <div :class="{ 'inBag': isProductInBag(product) }" class="product"
-        v-for="(product, index) in this.products"
+      <div :class="{ 'inBag': isProductInBag(product) }" class="product" v-for="(product, index) in this.products"
         :key="index">
         <div class="product-image" :style="{ backgroundImage: `url('${product.image}')` }"></div>
         <h4>{{ product.title }}</h4>
@@ -16,6 +15,8 @@
 
 <script>
 
+import { mapState } from 'vuex';
+
 export default {
   name: 'HomePage',
   data() {
@@ -24,14 +25,10 @@ export default {
     }
   },
 
-  computed: {
-    products() {
-      return this.$store.state.products;
-    },
-    productsInBag() {
-      return this.$store.state.productsInBag;
-    }
-  },
+  computed: mapState([
+    'products',
+    'productsInBag',
+  ]),
 
   methods: {
     addToBag(product) {
@@ -42,7 +39,9 @@ export default {
       return this.productsInBag.find((item) => item.id == product.id);
     },
     removeFromBag(product) {
-      this.$store.dispatch('removeFromBag', product.id);
+      if (confirm("Are you sure you want to remove this product from bag?")) {
+        this.$store.dispatch('removeFromBag', product.id);
+      }
     }
   }
 }
