@@ -13,6 +13,7 @@ import { mapState } from 'vuex';
 export default {
 
   created() {
+    this.$store.dispatch('loadBag');
     this.$store.dispatch('loadProducts');
   },
   computed: mapState([
