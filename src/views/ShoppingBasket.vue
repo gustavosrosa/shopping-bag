@@ -13,10 +13,10 @@
               <span class="quantity">{{ product.quantity }}</span>
               <button @click="product.quantity++">+</button>
             </span>
-            <span class="amount">US$ {{ (product.price * product.quantity).toFixed(2) }}</span>
+            <span class="amount">US$ {{ this.calcQuantityOfProducts(product).toFixed(2) }}</span>
           </div>
         </div>
-        <div class="grand-total" v-if="this.productsInBag.length > 0"> Grand Total: US$ 22.30</div>
+        <div class="grand-total" v-if="this.productsInBag.length > 0"> Grand Total: US$ {{this.calcTotal()}}</div>
       </template>
       <template v-else>
         <h4>No items in bag yet</h4>
@@ -32,7 +32,18 @@ export default {
   name: 'ShoppingBasket',
 
   methods: {
+    calcTotal() {
+      let total = 0;
 
+      this.productsInBag.forEach((product) => {
+        total += this.calcQuantityOfProducts(product);
+      });
+
+      return total.toFixed(2);
+    },
+    calcQuantityOfProducts(product) {
+      return product.price * product.quantity;
+    }
   },
 
   computed: mapState([
